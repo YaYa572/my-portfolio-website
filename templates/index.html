@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ personal_info.name }}的个人作品集</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="page-background"></div>
+    <nav class="navbar">
+        <div class="logo">{{ personal_info.initials }}</div>
+        <ul class="nav-links">
+            <li><a href="#about">关于</a></li>
+            <li><a href="#experience">经历</a></li>
+            <li><a href="#education">教育</a></li>
+            <li><a href="#hobbies">爱好</a></li>
+        </ul>
+    </nav>
+    <main class="main-content">
+        <header id="about" class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">Hi, I'm <span class="highlight">{{ personal_info.name }}</span></h1>
+                <p class="hero-subtitle">{{ personal_info.slogan }}</p>
+                <div class="hero-bio"><p>{{ personal_info.bio | safe }}</p></div>
+            </div>
+        </header>
+
+        <section id="experience" class="content-section">
+            <h2>实习经历</h2>
+            <div class="timeline">
+                {% for intern in experiences.internships %}
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>{{ intern.title }}</h3>
+                        <p><b>{{ intern.company }}</b> | <i>{{ intern.duration }}</i></p>
+                        <p class="achievement"><b>核心成就:</b> {{ intern.achievement }}</p>
+                        <div class="points-section">
+                            <ul>
+                                {% for point in intern.points %}
+                                <li>{{ point }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section id="education" class="content-section">
+            <h2>教育背景</h2>
+            <div class="education-container">
+                {% for edu in education %}
+                <div class="education-card">
+                    <div class="education-content">
+                        <h3>{{ edu.school }}</h3>
+                        <p class="duration">{{ edu.duration }}</p>
+                        <p class="courses"><b>核心课程:</b> {{ edu.courses }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        
+        <section id="hobbies" class="content-section">
+            <h2>爱好 & 作品集</h2>
+            <div class="hobby-showcase">
+                <h3>{{ experiences.hobbies.photography.title }}</h3>
+                <p class="hobby-description">{{ experiences.hobbies.photography.description }}</p>
+                <div class="photo-grid-final">
+                    {% for photo in experiences.hobbies.photography.gallery_images %}
+                    <div class="photo-item-final-{{ loop.index }}">
+                        <img src="{{ url_for('static', filename=photo) }}" alt="Photography">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="hobby-showcase">
+                <h3>{{ experiences.hobbies.pottery.title }}</h3>
+                <p class="hobby-description">{{ experiences.hobbies.pottery.description | safe }}</p>
+                <div class="pottery-grid-final">
+                    <div class="top-left">
+                        {% for image in experiences.hobbies.pottery.top_left %} <img src="{{ url_for('static', filename=image) }}"> {% endfor %}
+                    </div>
+                    <div class="top-middle">
+                        {% for image in experiences.hobbies.pottery.top_middle %} <img src="{{ url_for('static', filename=image) }}"> {% endfor %}
+                    </div>
+                    <div class="top-right">
+                        {% for image in experiences.hobbies.pottery.top_right %} <img src="{{ url_for('static', filename=image) }}"> {% endfor %}
+                    </div>
+                    <div class="bottom-left">
+                        {% for image in experiences.hobbies.pottery.bottom_left %} <img src="{{ url_for('static', filename=image) }}"> {% endfor %}
+                    </div>
+                    <div class="bottom-middle">
+                        {% for image in experiences.hobbies.pottery.bottom_middle %} <img src="{{ url_for('static', filename=image) }}"> {% endfor %}
+                    </div>
+                    <div class="bottom-right">
+                        {% for image in experiences.hobbies.pottery.bottom_right %} <img src="{{ url_for('static', filename=image) }}"> {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="hobby-showcase">
+                <h3>{{ experiences.hobbies.hiking.title }}</h3>
+                <p class="hobby-description">{{ experiences.hobbies.hiking.description }}</p>
+                {% for hike in experiences.hobbies.hiking.long_hikes %}
+                <div class="hiking-series">
+                    <h4>{{ hike.title }}</h4>
+                    <p>{{ hike.description | safe }}</p>
+                    <div class="series-image-row">
+                        {% for image in hike.images %}<img src="{{ url_for('static', filename=image) }}" alt="{{ hike.title }}">{% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="hiking-series">
+                    <h4>日常徒步</h4>
+                    <div class="short-hike-grid">
+                        {% for hike in experiences.hobbies.hiking.short_hikes %}
+                        <div class="short-hike-card">
+                            <img src="{{ url_for('static', filename=hike.image) }}" alt="{{ hike.title }}">
+                            <p>{{ hike.title }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
